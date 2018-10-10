@@ -1,4 +1,4 @@
-package Model;
+package View.TableModel;
 
 import Model.Stop;
 

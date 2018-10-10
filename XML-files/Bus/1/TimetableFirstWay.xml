@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Timetables>
+    <Timetable>
+        <Time>
+            <Hour>5</Hour>
+            <Minute>30 40</Minute>
+        </Time>
+        <Time>
+            <Hour>6</Hour>
+            <Minute>00 10 18 26 34 40 46 51 57</Minute>
+        </Time>
+        <Time>
+            <Hour>7</Hour>
+            <Minute>09 15 21 26 32 44 50 56</Minute>
+        </Time>
+        <Time>
+            <Hour>8</Hour>
+            <Minute>01 06 12 24 31 38 53</Minute>
+        </Time>
+        <Time>
+            <Hour>9</Hour>
+            <Minute>08 15 30 40 50</Minute>
+        </Time>
+        <Time>
+            <Hour>10</Hour>
+            <Minute>07 22 29 43 59</Minute>
+        </Time>
+        <Time>
+            <Hour>11</Hour>
+            <Minute>07 25 43</Minute>
+        </Time>
+        <Time>
+            <Hour>12</Hour>
+            <Minute>01 16 23 39 57</Minute>
+        </Time>
+        <Time>
+            <Hour>13</Hour>
+            <Minute>14 30 45 55</Minute>
+        </Time>
+        <Time>
+            <Hour>14</Hour>
+            <Minute>11 23 29 35 46 58</Minute>
+        </Time>
+        <Time>
+            <Hour>15</Hour>
+            <Minute>06 14 34 40 46 51 56</Minute>
+        </Time>
+        <Time>
+            <Hour>16</Hour>
+            <Minute>12 18 25 32 50 56</Minute>
+        </Time>
+        <Time>
+            <Hour>17</Hour>
+            <Minute>02 08 18 29 35 42 54</Minute>
+        </Time>
+        <Time>
+            <Hour>18</Hour>
+            <Minute>08 14 26 32 38</Minute>
+        </Time>
+        <Time>
+            <Hour>19</Hour>
+            <Minute>02 12 22 31 57</Minute>
+        </Time>
+        <Time>
+            <Hour>20</Hour>
+            <Minute>06 13 28 59</Minute>
+        </Time>
+        <Time>
+            <Hour>21</Hour>
+            <Minute>16 33 44</Minute>
+        </Time>
+        <Time>
+            <Hour>22</Hour>
+            <Minute>12 38 52</Minute>
+        </Time>
+        <Time>
+            <Hour>23</Hour>
+            <Minute>24 46</Minute>
+        </Time>
+        <Time>
+            <Hour>0</Hour>
+            <Minute>00</Minute>
+        </Time>
+    </Timetable>
+</Timetables>

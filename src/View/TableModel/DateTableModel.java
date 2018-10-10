@@ -1,4 +1,6 @@
-package Model;
+package View.TableModel;
+
+import Model.Timetable;
 
 import javax.swing.table.AbstractTableModel;
 

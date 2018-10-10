@@ -1,6 +1,6 @@
 import Controller.Operations;
+import Model.Transport;
 import View.MainWindow;
-import Model.*;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -10,16 +10,16 @@ public class Main
 
     public static void main(String[]args)
     {
-        List<Bus> listBuses=new LinkedList<>();
-        List<Tram> listTrams=new LinkedList<>();
-        List<Trolleybus> listTrolleybus=new LinkedList<>();
-        List<Metro> listMetro=new LinkedList<>();
-        addTransports(listBuses, listTrams);
+        List<Transport> listBuses=new LinkedList<>();
+        List<Transport> listTrams=new LinkedList<>();
+        List<Transport> listTrolleybus=new LinkedList<>();
+        List<Transport> listMetro=new LinkedList<>();
+        //addTransports(listBuses, listTrams);
         Operations operations=new Operations(listBuses, listTrams, listTrolleybus, listMetro);
         MainWindow window=new MainWindow(operations);
     }
 
-    public static void addTransports(List<Bus> listBuses, List<Tram> listTram) {
+    /*public static void addTransports(List<Bus> listBuses, List<Tram> listTram) {
         List<Stop> listStops1 = new LinkedList<>();
         List<Stop> listStops2 = new LinkedList<>();
         String[] nameOfTheStops1 = {"ДС Веснянка", "Нарочанская", "Минск-Арена",
@@ -62,4 +62,5 @@ public class Main
         Bus bus1=new Bus("1", routOfBus1);
         listBuses.add(bus1);
     }
+    */
 }

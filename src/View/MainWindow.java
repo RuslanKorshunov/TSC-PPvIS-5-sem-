@@ -1,11 +1,11 @@
 package View;
 
 import Controller.Operations;
-import Model.DateTableModel;
-import Model.StopTableModel;
-import Model.Timetable;
-import Model.TransportTableModel;
-
+import View.TableModel.DateTableModel;
+import View.TableModel.StopTableModel;
+import View.TableModel.TransportTableModel;
+import Model.TransportType;
+import Model.WayType;
 import javax.swing.*;
 import javax.swing.table.TableColumn;
 import java.awt.*;
@@ -18,18 +18,18 @@ public class MainWindow extends JFrame
 {
     private final int WIDTH=600;
     private final int HEIGHT=600;
-    private int codeTransport=1;
-    private int codeChangeWay=1;
+    private TransportType transportType=TransportType.Bus;
+    private WayType wayType=WayType.FIRSTWAY;
     private int formulaOfCell=-1;
     private int indexOfStop=-1;
-    private String TITLE="TSC";
+    private String title="TSC";
     private Container container;
     private SpringLayout layout;
     private Operations operations;
 
     public MainWindow(Operations operations)
     {
-        setTitle(TITLE);
+        setTitle(title);
         setSize(new Dimension(WIDTH, HEIGHT));
         setLocation(new Point(400,100));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -48,21 +48,27 @@ public class MainWindow extends JFrame
     private void createMenu()
     {
         JButton choiceTransport=new JButton("Транспорт");
+        JButton way=new JButton("Путь");
         JButton exit=new JButton("Выход");
         final int widthButton=100;
         final int heightButton=30;
         Dimension dimensionButton=new Dimension(widthButton, heightButton);
 
         choiceTransport.setPreferredSize(dimensionButton);
+        way.setPreferredSize(dimensionButton);
         exit.setPreferredSize(dimensionButton);
 
         container.add(choiceTransport);
+        container.add(way);
         container.add(exit);
 
         layout.putConstraint(SpringLayout.WEST, choiceTransport, 250, SpringLayout.WEST, container);
         layout.putConstraint(SpringLayout.NORTH, choiceTransport, 200, SpringLayout.NORTH, container);
 
-        layout.putConstraint(SpringLayout.NORTH, exit, 60, SpringLayout.SOUTH, choiceTransport);
+        layout.putConstraint(SpringLayout.WEST, way, 250, SpringLayout.WEST, container);
+        layout.putConstraint(SpringLayout.NORTH, way, 15, SpringLayout.SOUTH, choiceTransport);
+
+        layout.putConstraint(SpringLayout.NORTH, exit, 15, SpringLayout.SOUTH, way);
         layout.putConstraint(SpringLayout.WEST, exit, 250, SpringLayout.WEST, container);
 
         choiceTransport.addActionListener(new ActionListener()
@@ -72,6 +78,15 @@ public class MainWindow extends JFrame
             {
                 container.removeAll();
                 showTransportTables();
+            }
+        });
+        way.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                container.removeAll();
+                createWay();
             }
         });
         exit.addActionListener(new ActionListener()
@@ -90,7 +105,7 @@ public class MainWindow extends JFrame
     private void showTransportTables()
     {
         TransportTableModel transportTableModel=new TransportTableModel(20);
-        transportTableModel.setListTransports(operations.getListTransports(codeTransport));
+        transportTableModel.setListTransports(operations.getListTransports(transportType));
         StopTableModel stopTableModel=new StopTableModel(10);
         DateTableModel dateTableModel=new DateTableModel(24);
 
@@ -216,8 +231,8 @@ public class MainWindow extends JFrame
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                codeTransport=1;
-                transportTableModel.setListTransports(operations.getListTransports(codeTransport));
+                transportType=TransportType.Bus;
+                transportTableModel.setListTransports(operations.getListTransports(transportType));
                 labelNameWay.setText(" ");
                 dateTableModel.setTimetable(null);
                 repaint();
@@ -228,8 +243,8 @@ public class MainWindow extends JFrame
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                codeTransport=2;
-                transportTableModel.setListTransports(operations.getListTransports(codeTransport));
+                transportType = TransportType.Tram;
+                transportTableModel.setListTransports(operations.getListTransports(transportType));
                 labelNameWay.setText(" ");
                 dateTableModel.setTimetable(null);
                 repaint();
@@ -240,8 +255,8 @@ public class MainWindow extends JFrame
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                codeTransport=3;
-                transportTableModel.setListTransports(operations.getListTransports(codeTransport));
+                transportType=TransportType.Trolleybus;
+                transportTableModel.setListTransports(operations.getListTransports(transportType));
                 labelNameWay.setText(" ");
                 dateTableModel.setTimetable(null);
                 repaint();
@@ -252,8 +267,8 @@ public class MainWindow extends JFrame
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                codeTransport=4;
-                transportTableModel.setListTransports(operations.getListTransports(codeTransport));
+                transportType=TransportType.Metro;
+                transportTableModel.setListTransports(operations.getListTransports(transportType));
                 labelNameWay.setText(" ");
                 dateTableModel.setTimetable(null);
                 repaint();
@@ -266,8 +281,8 @@ public class MainWindow extends JFrame
             public void actionPerformed(ActionEvent e)
             {
                 container.removeAll();
-                codeTransport=1;
-                codeChangeWay=1;
+                transportType=TransportType.Bus;
+                wayType=WayType.FIRSTWAY;
                 formulaOfCell=-1;
                 indexOfStop=-1;
                 createMenu();
@@ -280,10 +295,11 @@ public class MainWindow extends JFrame
             {
                 if(formulaOfCell!=-1)
                 {
-                    codeChangeWay = codeChangeWay == 1 ? 2 : 1;
-                    stopTableModel.setListStops(operations.getListStops(codeTransport, codeChangeWay, formulaOfCell));
+                    wayType = wayType == WayType.FIRSTWAY ? WayType.SECONDWAY : WayType.FIRSTWAY;
+                    System.out.println(wayType);
+                    stopTableModel.setListStops(operations.getListStops(transportType, wayType, formulaOfCell));
                     dateTableModel.setTimetable(null);
-                    labelNameWay.setText(operations.getNameWay(codeTransport, codeChangeWay, formulaOfCell));
+                    labelNameWay.setText(operations.getNameWay(transportType, wayType, formulaOfCell));
                     repaint();
                 }
             }
@@ -299,8 +315,8 @@ public class MainWindow extends JFrame
                 if(!transportTableModel.getValueAt(selectedRow, selectedColumn).equals(" "))
                 {
                     formulaOfCell = selectedRow * 5 + selectedColumn;
-                    stopTableModel.setListStops(operations.getListStops(codeTransport, codeChangeWay, formulaOfCell));
-                    labelNameWay.setText(operations.getNameWay(codeTransport, codeChangeWay, formulaOfCell));
+                    stopTableModel.setListStops(operations.getListStops(transportType, wayType, formulaOfCell));
+                    labelNameWay.setText(operations.getNameWay(transportType, wayType, formulaOfCell));
                 }
                 repaint();
             }
@@ -314,7 +330,7 @@ public class MainWindow extends JFrame
 
                 indexOfStop=jTableStops.rowAtPoint(e.getPoint());
                 if(!stopTableModel.getValueAt(indexOfStop, 0).equals(" "))
-                    dateTableModel.setTimetable(operations.getTimetable(codeChangeWay, formulaOfCell, indexOfStop));
+                    dateTableModel.setTimetable(operations.getTimetable(wayType, indexOfStop));
                 repaint();
             }
         });
@@ -322,4 +338,7 @@ public class MainWindow extends JFrame
         revalidate();
         repaint();
     }
+
+    private void createWay()
+    {}
 }

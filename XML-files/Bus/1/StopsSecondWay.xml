@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Stops>
+    <Stop><Name>Кирова</Name></Stop>
+    <Stop><Name>Вокзал</Name></Stop>
+    <Stop><Name>Площадь Независимости</Name></Stop>
+    <Stop><Name>Володарского</Name></Stop>
+    <Stop><Name>Площадь Свободы</Name></Stop>
+    <Stop><Name>Дворец Спорта</Name></Stop>
+    <Stop><Name>гостиница Юбилейная</Name></Stop>
+    <Stop><Name>Музей истории ВОВ</Name></Stop>
+    <Stop><Name>Гвардейская</Name></Stop>
+    <Stop><Name>Комсомольское озеро</Name></Stop>
+    <Stop><Name>Республиканский центр тенниса</Name></Stop>
+    <Stop><Name>Футбольный манеж</Name></Stop>
+    <Stop><Name>Крупцы</Name></Stop>
+    <Stop><Name>Радужная</Name></Stop>
+    <Stop><Name>Университет физкультуры</Name></Stop>
+    <Stop><Name>Минск-Арена</Name></Stop>
+    <Stop><Name>Посёлок Пионерский</Name></Stop>
+    <Stop><Name>Нарочанская</Name></Stop>
+    <Stop><Name>ДС Веснянка</Name></Stop>
+</Stops>

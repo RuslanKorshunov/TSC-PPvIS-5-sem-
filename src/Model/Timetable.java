@@ -17,10 +17,10 @@ public class Timetable
         }
     }
 
-    public void addNewTime(int hour, int minute)
+    public void addNewTime(String hour, String minute)
     {
-        String newTime=timetable.get(hour)+(minute<10?"0"+minute+" ":minute+" ");
-        timetable.set(hour, newTime);
+        String newTime=timetable.get(Integer.parseInt(hour))+":"+minute;
+        timetable.set(Integer.parseInt(hour), newTime);
     }
 
     public String getTime(int hour)

@@ -1,17 +1,14 @@
-package Model;
+package View.TableModel;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.List;
-import Model.*;
+
+import Model.Transport;
 
 public class TransportTableModel extends AbstractTableModel
 {
    private final int columnCount=5;
    private int rowCount;
-/*   private List<Bus> listBuses;
-   private List<Tram> listTrams;
-   private List<Trolleybus> listTrolleybuses;
-   private List<Metro> listMetro;*/
    private List<Transport> listTransports;
 
    public TransportTableModel(int rowCount)
