@@ -28,7 +28,7 @@ class OpenParser
         {
             boolean bStop;
             boolean bName;
-            Stop stop;
+            String stopName="";
 
             public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException
             {
@@ -42,7 +42,7 @@ class OpenParser
             {
                 if(bName)
                 {
-                    stop=new Stop(new String(ch, start, length));
+                    stopName=new String(ch, start, length);
                     bName=false;
                 }
             }
@@ -52,9 +52,15 @@ class OpenParser
                 if(qName.equalsIgnoreCase("Stop"))
                 {
                     if(code==READLISTOFSTOPS)
-                        operations.listAllStops.add(stop);
+                        operations.listAllStops.add(new Stop(stopName));
                     if(code==READLISTOFSTOPSCURRENTWAY)
-                        operations.currentTransport.getRout().getListStops(operations.wayType).add(stop);
+                    {
+                        Stop currentStop=new Stop("");
+                        for(Stop stop:operations.listAllStops)
+                            if (stop.getName().equals(stopName))
+                                currentStop = stop;
+                        operations.currentTransport.getRout().getListStops(operations.wayType).add(currentStop);
+                    }
                 }
 
             }
@@ -201,77 +207,7 @@ class OpenParser
         };
         return defaultHandler;
     }
-/*
-    private DefaultHandler getDefaultHandlerForListStops()
-    {
-        DefaultHandler defaultHandler=new DefaultHandler()
-        {
-            boolean bStop=false;
-            boolean bName=false;
-            boolean bFirstWay=false;
-            boolean bSecondWay=false;
-            //Stop stop;
-            List<Stop> listFirstWay;
-            List<Stop> listSecondWay;
 
-            public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException
-            {
-                if(qName.equalsIgnoreCase("Stop")) bStop=true;
-                if(qName.equalsIgnoreCase("FirstWay"))
-                {
-                    listFirstWay=new LinkedList<>();
-                    bFirstWay=true;
-                }
-                if(qName.equalsIgnoreCase("SecondWay"))
-                {
-                    listSecondWay=new LinkedList<>();
-                    bSecondWay=true;
-                }
-                if(qName.equalsIgnoreCase("Name")) bName=true;
-            }
-
-            public void characters(char ch[], int start, int length)
-            {
-                *//**//*if(bStop)
-                    bStop=false;*//**//*
-                if(bName)
-                {
-                    String name=new String(ch, start, length);
-                    for(Stop stop:operations.getListAllStops())
-                    {
-                        if(bFirstWay)
-                        {
-                            listFirstWay.add(stop);
-                            break;
-                        }
-                        if(bSecondWay)
-                        {
-                            listSecondWay.add(stop);
-                            break;
-                        }
-                    }
-                    //bName=false;
-                }
-                *//**//*if(bFirstWay)
-                    bFirstWay=false;
-                if(bSecondWay)
-                    bSecondWay=false;*//**//*
-            }
-
-            public void endElement(String uri, String localName, String qName) throws SAXException
-            {
-                System.out.println("FirstWay");
-                for(Stop stop:listFirstWay)
-                    System.out.println(stop.getName());
-                System.out.println("SecondWay");
-                for(Stop stop:listSecondWay)
-                    System.out.println(stop.getName());
-            }
-        };
-        return defaultHandler;
-    }
-
-*/
     public boolean openFile(String fileName, int code)
     {
         try
@@ -279,75 +215,6 @@ class OpenParser
             SAXParserFactory saxParserFactory=SAXParserFactory.newInstance();
             SAXParser saxParser=saxParserFactory.newSAXParser();
 
-            /*DefaultHandler defaultHandler=new DefaultHandler()
-            {
-                boolean bSNP=false;
-                boolean bCast=false;
-                boolean bPosition=false;
-                boolean bTitles=false;
-                boolean bView=false;
-                boolean bDischarge=false;
-                //Sportsman sportsman;
-
-                public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException
-                {
-                    if(qName.equalsIgnoreCase("Sportsman"))
-                        sportsman=new Sportsman();
-                    if(qName.equalsIgnoreCase("SNP"))
-                        bSNP=true;
-                    if(qName.equalsIgnoreCase("Cast"))
-                        bCast=true;
-                    if(qName.equalsIgnoreCase("Position"))
-                        bPosition=true;
-                    if(qName.equalsIgnoreCase("Titles"))
-                        bTitles=true;
-                    if(qName.equalsIgnoreCase("View"))
-                        bView=true;
-                    if(qName.equalsIgnoreCase("Discharge"))
-                        bDischarge=true;
-                }
-
-                public void endElement(String uri, String localName, String qName) throws SAXException
-                {
-                    if(qName.equalsIgnoreCase("Sportsman"))
-                        menu.getOperations().addSportsman(sportsman);
-                }
-
-                public void characters(char ch[], int start, int length)
-                {
-                    if(bSNP)
-                    {
-                        sportsman.setSNP(new String(ch, start, length));
-                        bSNP=false;
-                    }
-                    if(bCast)
-                    {
-                        sportsman.setCast(new String(ch, start, length));
-                        bCast=false;
-                    }
-                    if(bPosition)
-                    {
-                        sportsman.setPosition(new String(ch, start, length));
-                        bPosition=false;
-                    }
-                    if(bTitles)
-                    {
-                        sportsman.setTitles(Integer.parseInt(new String(ch, start, length)));
-                        bTitles=false;
-                    }
-                    if(bView)
-                    {
-                        sportsman.setView(new String(ch, start, length));
-                        bView=false;
-                    }
-                    if(bDischarge)
-                    {
-                        sportsman.setDischarge(new String(ch, start, length));
-                        bDischarge=false;
-                    }
-                }
-
-            };*/
             DefaultHandler defaultHandler=new DefaultHandler();
             switch (code)
             {

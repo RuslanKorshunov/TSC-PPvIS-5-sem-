@@ -39,6 +39,12 @@ public class StopTableModel extends AbstractTableModel
             return listStops.get(rowIndex).getName();
     }
 
+    public void clearListStops()
+    {
+        listStops=new LinkedList<>();
+        rowCount=10;
+    }
+
     public void setListStops(List<Stop> listStops)
     {
         this.listStops = listStops;

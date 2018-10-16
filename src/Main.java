@@ -1,4 +1,7 @@
 import Controller.Operations;
+import Model.GraphModel.Edge;
+import Model.GraphModel.Graph;
+import Model.Stop;
 import Model.Transport;
 import View.MainWindow;
 
@@ -17,6 +20,42 @@ public class Main
         //addTransports(listBuses, listTrams);
         Operations operations=new Operations(listBuses, listTrams, listTrolleybus, listMetro);
         MainWindow window=new MainWindow(operations);
+        //createGraph();
+    }
+
+    static void createGraph()
+    {
+        /*Graph graph=new Graph();
+        Stop first=new Stop("01");
+        Stop second=new Stop("02");
+        Stop third=new Stop("03");
+        Stop fourth=new Stop("04");
+        Stop fifth=new Stop("05");
+        Stop sixth=new Stop("06");
+        Stop seventh=new Stop("07");
+        Stop eighth=new Stop("08");
+        Stop ninth=new Stop("09");
+        Stop tenth=new Stop("10");
+        Stop eleventh=new Stop("11");
+        graph.addNewEdge(new Edge(first, second));
+        graph.addNewEdge(new Edge(second, third));
+        graph.addNewEdge(new Edge(third, fourth));
+        graph.addNewEdge(new Edge(fourth, fifth));
+        graph.addNewEdge(new Edge(fifth, fourth));
+        graph.addNewEdge(new Edge(fourth, sixth));
+        graph.addNewEdge(new Edge(sixth, seventh));
+        //graph.addNewEdge(new Edge(seventh, first));
+        graph.addNewEdge(new Edge(sixth, eighth));
+        graph.addNewEdge(new Edge(eighth, ninth));
+        graph.addNewEdge(new Edge(ninth, tenth));
+        graph.addNewEdge(new Edge(tenth, sixth));
+        graph.addNewEdge(new Edge(sixth, third));
+        graph.addNewEdge(new Edge(fifth, eleventh));
+        graph.addNewEdge(new Edge(tenth, eleventh));
+        graph.findPath(first, tenth);
+        graph.findPath(seventh, fifth);
+        graph.findPath(fifth, seventh);*/
+        //graph.showGraph();
     }
 
     /*public static void addTransports(List<Bus> listBuses, List<Tram> listTram) {

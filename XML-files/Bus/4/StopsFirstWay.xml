@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Stops>
+    <Stop><Name>ДС Дружная</Name></Stop>
+    <Stop><Name>Академия управления</Name></Stop>
+    <Stop><Name>гостиница Спутник</Name></Stop>
+    <Stop><Name>Чкалова</Name></Stop>
+    <Stop><Name>Аэропорт Минск-1</Name></Stop>
+    <Stop><Name>Авакяна</Name></Stop>
+    <Stop><Name>Аэродромная</Name></Stop>
+    <Stop><Name>Левкова</Name></Stop>
+    <Stop><Name>Германовская</Name></Stop>
+    <Stop><Name>ж/д ст.Минск Южный</Name></Stop>
+</Stops>

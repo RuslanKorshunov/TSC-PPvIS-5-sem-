@@ -1,12 +1,14 @@
 package Controller;
 
+import Model.GraphModel.Graph;
 import Model.Transport;
 import Model.Stop;
 import Model.Timetable;
 import Model.TransportType;
 import Model.WayType;
-import java.util.LinkedList;
-import java.util.List;
+
+import java.util.*;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class Operations
 {
@@ -15,13 +17,13 @@ public class Operations
     List<Transport> listTrolleybuses;
     List<Transport> listMetro;
     List<Transport> listTransports;
-    List<Stop> listAllStops;
     List<Stop> listStopsThisRout;
-    Timetable timetable;
+    List<Stop> listAllStops;
     TransportType transportType;
     WayType wayType;
     OpenParser openParser;
     Transport currentTransport;
+    Graph graph;
 
     public Operations(List<Transport> listBuses,
                       List<Transport> listTrams,
@@ -34,8 +36,8 @@ public class Operations
         this.listMetro=listMetro;
 
         listTransports=new LinkedList<>();
-        listAllStops=new LinkedList<>();
         listStopsThisRout=new LinkedList<>();
+        listAllStops=new LinkedList<>();
 
         openParser=new OpenParser(this);
         openParser.openFile("XML-files/Stops.xml", 0);
@@ -67,7 +69,6 @@ public class Operations
 
     public List<Stop> getListStops(TransportType transportType, WayType wayType, int indexOfTransport)
     {
-        //listStopsThisRout.clear();
         this.transportType=transportType;
         this.wayType=wayType;
         currentTransport=listTransports.get(indexOfTransport);
@@ -83,7 +84,6 @@ public class Operations
         return currentTransport.getRout().getListStops(wayType);
     }
 
-    //исправить
     public Timetable getTimetable(WayType wayType, int indexOfStop)
     {
         if(currentTransport.getRout().getListTimetable(wayType).isEmpty())
@@ -93,12 +93,8 @@ public class Operations
                 fileName+="TimetableFirstWay.xml";
             else
                 fileName+="TimetableSecondWay.xml";
-            System.out.println(fileName);
             openParser.openFile(fileName, 3);
         }
-        //timetable=listTransports.get(indexOfTransport).getRout().getListTimetable(wayType).get(indexOfStop);
-        /*for(int i=0; i<24; i++)
-            System.out.println(timetable.getTime(i));*/
         return currentTransport.getRout().getListTimetable(wayType).get(indexOfStop);
     }
 
@@ -117,6 +113,96 @@ public class Operations
                 return listMetro.get(indexOfTransport).getRout().getName(wayType);
         }
         return " ";
+    }
+
+    public String[] getListNameStops()
+    {
+        int size=listAllStops.size();
+        String[] listNames=new String[size];
+        for(int i=0; i<size; i++)
+            listNames[i]=listAllStops.get(i).getName();
+        return listNames;
+    }
+/////////////////////////////////////////
+    private void createGraph()
+    {
+        graph=new Graph();
+        graph.addNewNodes(listAllStops);
+
+        for(TransportType transportType: TransportType.values())
+            for(WayType wayType: WayType.values())
+                if(transportType!=TransportType.NULL)
+                {
+                    getListTransports(transportType);
+                    for(Transport transport:listTransports)
+                        graph.addNewEdges(getListStops(transportType, wayType, listTransports.indexOf(transport)));
+                }
+    }
+
+    public List<String> findPath(int beginIndex, int endIndex)
+    {
+        createGraph();
+        Stop begin=listAllStops.get(beginIndex);
+        Stop end=listAllStops.get(endIndex);
+
+        Queue<Stop> waitingStops=new LinkedBlockingQueue<>();
+        List<Stop> testedStops=new ArrayList<>();
+        List<String> path=new ArrayList<>();
+        Map<Stop, Stop> parents=new HashMap<>();
+        parents.put(begin, begin);
+        path.add(end.getName());
+
+        waitingStops.add(begin);
+        boolean answer=breadthFirstSearch(waitingStops.poll(), end, waitingStops, testedStops, parents);
+
+        /*System.out.println(answer+"\n//////////////////");*/
+        if(answer!=true)
+            path.clear();
+        else
+        {
+            Stop parent=parents.get(end);
+            while(!parent.equals(begin))
+            {
+                path.add(parent.getName());
+                Stop newParent=parents.get(parent);
+                parent=newParent;
+            }
+            path.add(begin.getName());
+            /*for(String stop: path)
+                System.out.print(stop+"<-");*/
+        }
+        return path;
+    }
+
+    private boolean breadthFirstSearch(Stop currentStop,
+                                       Stop end,
+                                       Queue<Stop> waitingStops,
+                                       List<Stop> testedStops,
+                                       Map<Stop, Stop> parents)
+    {
+        boolean answer;
+        //String name=currentStop.getName();
+        testedStops.add(currentStop);
+        if(currentStop.equals(end))
+            return true;
+        for(Stop stop: graph.getListStops(currentStop))
+        {
+            //String otherName=stop.getName();
+            if(!testedStops.contains(stop))
+            {
+                parents.putIfAbsent(stop, currentStop);
+                //String othername2=stop.getName();
+                waitingStops.add(stop);
+            }
+        }
+        if(waitingStops.isEmpty())
+            return false;
+        answer=breadthFirstSearch(waitingStops.poll(),
+                                    end,
+                                    waitingStops,
+                                    testedStops,
+                                    parents);
+        return answer;
     }
 
     public void exitFromProgram()

@@ -1,6 +1,7 @@
 package View;
 
 import Controller.Operations;
+import Model.Stop;
 import View.TableModel.DateTableModel;
 import View.TableModel.StopTableModel;
 import View.TableModel.TransportTableModel;
@@ -13,6 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
 public class MainWindow extends JFrame
 {
@@ -26,6 +28,7 @@ public class MainWindow extends JFrame
     private Container container;
     private SpringLayout layout;
     private Operations operations;
+    private PaintPanel paintPanel;
 
     public MainWindow(Operations operations)
     {
@@ -234,6 +237,7 @@ public class MainWindow extends JFrame
                 transportType=TransportType.Bus;
                 transportTableModel.setListTransports(operations.getListTransports(transportType));
                 labelNameWay.setText(" ");
+                stopTableModel.clearListStops();
                 dateTableModel.setTimetable(null);
                 repaint();
             }
@@ -246,6 +250,7 @@ public class MainWindow extends JFrame
                 transportType = TransportType.Tram;
                 transportTableModel.setListTransports(operations.getListTransports(transportType));
                 labelNameWay.setText(" ");
+                stopTableModel.clearListStops();
                 dateTableModel.setTimetable(null);
                 repaint();
             }
@@ -258,6 +263,7 @@ public class MainWindow extends JFrame
                 transportType=TransportType.Trolleybus;
                 transportTableModel.setListTransports(operations.getListTransports(transportType));
                 labelNameWay.setText(" ");
+                stopTableModel.clearListStops();
                 dateTableModel.setTimetable(null);
                 repaint();
             }
@@ -270,6 +276,7 @@ public class MainWindow extends JFrame
                 transportType=TransportType.Metro;
                 transportTableModel.setListTransports(operations.getListTransports(transportType));
                 labelNameWay.setText(" ");
+                stopTableModel.clearListStops();
                 dateTableModel.setTimetable(null);
                 repaint();
             }
@@ -340,5 +347,91 @@ public class MainWindow extends JFrame
     }
 
     private void createWay()
-    {}
+    {
+        JComboBox firstStop=new JComboBox(operations.getListNameStops());
+        JComboBox secondStop=new JComboBox(operations.getListNameStops());
+        paintPanel=new PaintPanel();
+        //paintPanel.setPreferredSize(new Dimension(200,400));
+
+        JButton buttonBack=new JButton("Назад");
+        JButton buttonCreateWay=new JButton("Построить маршрут");
+
+        firstStop.setEditable(false);
+        secondStop.setEditable(false);
+
+        container.add(firstStop);
+        container.add(secondStop);
+        container.add(buttonBack);
+        container.add(buttonCreateWay);
+        container.add(paintPanel);
+
+        layout.putConstraint(SpringLayout.NORTH, firstStop, 200, SpringLayout.NORTH, container);
+        layout.putConstraint(SpringLayout.WEST, firstStop, 20, SpringLayout.WEST, container);
+        layout.putConstraint(SpringLayout.EAST, firstStop, -380, SpringLayout.EAST, container);
+
+        layout.putConstraint(SpringLayout.NORTH, secondStop, 5, SpringLayout.SOUTH, firstStop);
+        layout.putConstraint(SpringLayout.WEST, secondStop, 20, SpringLayout.WEST, container);
+        layout.putConstraint(SpringLayout.EAST, secondStop, -380, SpringLayout.EAST, container);
+
+        layout.putConstraint(SpringLayout.NORTH, buttonCreateWay, 10, SpringLayout.SOUTH, secondStop);
+        layout.putConstraint(SpringLayout.WEST, buttonCreateWay, 20, SpringLayout.WEST, container);
+
+        layout.putConstraint(SpringLayout.NORTH, buttonBack, 5, SpringLayout.SOUTH, buttonCreateWay);
+        layout.putConstraint(SpringLayout.WEST, buttonBack, 20, SpringLayout.WEST, container);
+
+        layout.putConstraint(SpringLayout.NORTH, paintPanel, 30, SpringLayout.NORTH, container);
+        layout.putConstraint(SpringLayout.EAST, paintPanel, -20, SpringLayout.EAST, container);
+
+        buttonBack.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                container.removeAll();
+                createMenu();
+            }
+        });
+
+        buttonCreateWay.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                int firstName=firstStop.getSelectedIndex();
+                int secondName=secondStop.getSelectedIndex();
+                List<String> path=operations.findPath(firstName, secondName);
+                if(path.isEmpty())
+                {
+                    showError();
+                    //paintPanel=new PaintPanel();
+                }
+                else
+                {
+                    container.remove(paintPanel);
+                    createPaintPanel(path);
+                }
+            }
+        });
+
+        revalidate();
+        repaint();
+    }
+
+    private void createPaintPanel(List<String> path)
+    {
+        paintPanel=new PaintPanel(path);
+
+        container.add(paintPanel);
+
+        layout.putConstraint(SpringLayout.NORTH, paintPanel, 30, SpringLayout.NORTH, container);
+        layout.putConstraint(SpringLayout.EAST, paintPanel, -20, SpringLayout.EAST, container);
+
+        revalidate();
+        repaint();
+    }
+
+    private void showError()
+    {
+        JOptionPane.showMessageDialog(this,"Необходимые данные отсутствуют.","Ошибка чтения данных", JOptionPane.ERROR_MESSAGE);
+    }
 }

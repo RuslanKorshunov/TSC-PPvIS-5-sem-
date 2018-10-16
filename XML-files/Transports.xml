@@ -9,6 +9,15 @@
     <Bus>
         <Number>2с</Number>
     </Bus>
+    <Bus>
+        <Number>3c</Number>
+    </Bus>
+    <Bus>
+        <Number>4</Number>
+    </Bus>
+    <Bus>
+        <Number>4д</Number>
+    </Bus>
     <Metro>
         <Number>М1</Number>
     </Metro>

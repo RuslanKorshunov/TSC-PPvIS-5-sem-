@@ -1,3 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Stops>
+    <Stop><Name>ДС Лошица-2</Name></Stop>
+    <Stop><Name>ДС Лошица-2(посадка/высадка пассажиров)</Name></Stop>
+    <Stop><Name>Прушинских</Name></Stop>
+    <Stop><Name>АЗС</Name></Stop>
+    <Stop><Name>Игуменский тракт</Name></Stop>
+    <Stop><Name>Янки Лучины</Name></Stop>
+    <Stop><Name>Иосифа Гашкевича</Name></Stop>
+    <Stop><Name>переулок Чижевских</Name></Stop>
+    <Stop><Name>Камвольный комбинат</Name></Stop>
+    <Stop><Name>Семёнова</Name></Stop>
+    <Stop><Name>Троллейбусный парк</Name></Stop>
+    <Stop><Name>Автобаза</Name></Stop>
+    <Stop><Name>АВ Восточный</Name></Stop>
+    <Stop><Name>Экономический университет</Name></Stop>
+    <Stop><Name>Партизанский проспект</Name></Stop>
+    <Stop><Name>Буденного</Name></Stop>
+    <Stop><Name>ст.м.Тракторный Завод</Name></Stop>
 </Stops>

@@ -38,6 +38,11 @@ public class TransportTableModel extends AbstractTableModel
            return listTransports.get(formula).getNumber();
    }
 
+   public void clearListTransport()
+   {
+       listTransports.clear();
+   }
+
    public void setListTransports(List<Transport> listTransports)
    {
       this.listTransports=listTransports;
