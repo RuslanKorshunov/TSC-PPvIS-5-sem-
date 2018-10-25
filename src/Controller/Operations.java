@@ -1,5 +1,6 @@
 package Controller;
 
+import Model.GraphModel.Edge;
 import Model.GraphModel.Graph;
 import Model.Transport;
 import Model.Stop;
@@ -25,16 +26,12 @@ public class Operations
     Transport currentTransport;
     Graph graph;
 
-    public Operations(List<Transport> listBuses,
-                      List<Transport> listTrams,
-                      List<Transport> listTrolleybuses,
-                      List<Transport> listMetro)
+    public Operations()
     {
-        this.listBuses=listBuses;
-        this.listTrams =listTrams;
-        this.listTrolleybuses=listTrolleybuses;
-        this.listMetro=listMetro;
-
+        listBuses=new LinkedList<>();
+        listTrams=new LinkedList<>();
+        listTrolleybuses=new LinkedList<>();
+        listMetro=new LinkedList<>();
         listTransports=new LinkedList<>();
         listStopsThisRout=new LinkedList<>();
         listAllStops=new LinkedList<>();
@@ -135,11 +132,11 @@ public class Operations
                 {
                     getListTransports(transportType);
                     for(Transport transport:listTransports)
-                        graph.addNewEdges(getListStops(transportType, wayType, listTransports.indexOf(transport)));
+                        graph.addNewEdges(transport, getListStops(transportType, wayType, listTransports.indexOf(transport)));
                 }
     }
 
-    public List<String> findPath(int beginIndex, int endIndex)
+    public List<Stop> findPath(int beginIndex, int endIndex)
     {
         createGraph();
         Stop begin=listAllStops.get(beginIndex);
@@ -147,15 +144,14 @@ public class Operations
 
         Queue<Stop> waitingStops=new LinkedBlockingQueue<>();
         List<Stop> testedStops=new ArrayList<>();
-        List<String> path=new ArrayList<>();
+        List<Stop> path=new ArrayList<>();
         Map<Stop, Stop> parents=new HashMap<>();
         parents.put(begin, begin);
-        path.add(end.getName());
+        path.add(end);
 
         waitingStops.add(begin);
         boolean answer=breadthFirstSearch(waitingStops.poll(), end, waitingStops, testedStops, parents);
 
-        /*System.out.println(answer+"\n//////////////////");*/
         if(answer!=true)
             path.clear();
         else
@@ -163,13 +159,11 @@ public class Operations
             Stop parent=parents.get(end);
             while(!parent.equals(begin))
             {
-                path.add(parent.getName());
+                path.add(parent);
                 Stop newParent=parents.get(parent);
                 parent=newParent;
             }
-            path.add(begin.getName());
-            /*for(String stop: path)
-                System.out.print(stop+"<-");*/
+            path.add(begin);
         }
         return path;
     }
@@ -181,17 +175,14 @@ public class Operations
                                        Map<Stop, Stop> parents)
     {
         boolean answer;
-        //String name=currentStop.getName();
         testedStops.add(currentStop);
         if(currentStop.equals(end))
             return true;
         for(Stop stop: graph.getListStops(currentStop))
         {
-            //String otherName=stop.getName();
             if(!testedStops.contains(stop))
             {
                 parents.putIfAbsent(stop, currentStop);
-                //String othername2=stop.getName();
                 waitingStops.add(stop);
             }
         }
@@ -203,6 +194,75 @@ public class Operations
                                     testedStops,
                                     parents);
         return answer;
+    }
+
+    public List<String> getInformationAbout(List<Stop> path)
+    {
+        List<List<Transport>> listTransportsForPath=new ArrayList<>();
+        for (int i = 0; i < path.size() - 1; i++)
+        {
+            Edge edge = new Edge(path.get(i+1), path.get(i));
+            List<Transport> list = graph.getListTransportBy(edge);
+            listTransportsForPath.add(list);
+        }
+        List<Integer> listWayLength=new ArrayList<>();
+        List<Transport> listNecessaryTransports=new ArrayList<>();
+        for(int i=0; i<listTransportsForPath.size(); i++)
+        {
+            int size=listTransportsForPath.get(i).size();
+            int indexOfMax=0;
+            int lengthOfMaxWay=1;
+            for(int j=0; j<size; j++)
+            {
+                int numberOfList=i+1;
+                int currentLength=1;
+                while((j+numberOfList)<listTransportsForPath.size()
+                        && listTransportsForPath.get(numberOfList).contains(listTransportsForPath.get(i).get(j)))
+                {
+                    numberOfList++;
+                    currentLength++;
+                }
+                if(currentLength>lengthOfMaxWay)
+                {
+                    lengthOfMaxWay=currentLength;
+                    indexOfMax=j;
+                }
+            }
+            listWayLength.add(lengthOfMaxWay);
+            listNecessaryTransports.add(listTransportsForPath.get(i).get(indexOfMax));
+            i+=(lengthOfMaxWay-1);
+        }
+        List<String> listResult=new ArrayList<>();
+        int indexOfTransport=0;
+        listResult.add(path.get(indexOfTransport).getName());
+        for(int i=0; i<listWayLength.size(); i++)
+        {
+            listResult.add(getTransportTypeInRussian(listNecessaryTransports.get(i).getTransportType())+listNecessaryTransports.get(i).getNumber());
+            indexOfTransport+=(listWayLength.get(i));
+            listResult.add(path.get(indexOfTransport).getName());
+        }
+        return listResult;
+    }
+
+    private String getTransportTypeInRussian(TransportType transportType)
+    {
+        String string="";
+        switch (transportType)
+        {
+            case Bus:
+                string="авт.";
+                break;
+            case Tram:
+                string="трам.";
+                break;
+            case Trolleybus:
+                string="трол.";
+                break;
+            case Metro:
+                string="мет.";
+                break;
+        }
+        return string;
     }
 
     public void exitFromProgram()

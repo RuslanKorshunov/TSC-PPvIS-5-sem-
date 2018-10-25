@@ -28,7 +28,8 @@ public class MainWindow extends JFrame
     private Container container;
     private SpringLayout layout;
     private Operations operations;
-    private PaintPanel paintPanel;
+    private StopPanel stopPanel;
+    private TransportPanel transportPanel;
 
     public MainWindow(Operations operations)
     {
@@ -350,8 +351,8 @@ public class MainWindow extends JFrame
     {
         JComboBox firstStop=new JComboBox(operations.getListNameStops());
         JComboBox secondStop=new JComboBox(operations.getListNameStops());
-        paintPanel=new PaintPanel();
-        //paintPanel.setPreferredSize(new Dimension(200,400));
+        stopPanel =new StopPanel();
+        transportPanel=new TransportPanel();
 
         JButton buttonBack=new JButton("Назад");
         JButton buttonCreateWay=new JButton("Построить маршрут");
@@ -363,9 +364,10 @@ public class MainWindow extends JFrame
         container.add(secondStop);
         container.add(buttonBack);
         container.add(buttonCreateWay);
-        container.add(paintPanel);
+        container.add(stopPanel);
+        container.add(transportPanel);
 
-        layout.putConstraint(SpringLayout.NORTH, firstStop, 200, SpringLayout.NORTH, container);
+        layout.putConstraint(SpringLayout.NORTH, firstStop, 30, SpringLayout.NORTH, container);
         layout.putConstraint(SpringLayout.WEST, firstStop, 20, SpringLayout.WEST, container);
         layout.putConstraint(SpringLayout.EAST, firstStop, -380, SpringLayout.EAST, container);
 
@@ -379,8 +381,11 @@ public class MainWindow extends JFrame
         layout.putConstraint(SpringLayout.NORTH, buttonBack, 5, SpringLayout.SOUTH, buttonCreateWay);
         layout.putConstraint(SpringLayout.WEST, buttonBack, 20, SpringLayout.WEST, container);
 
-        layout.putConstraint(SpringLayout.NORTH, paintPanel, 30, SpringLayout.NORTH, container);
-        layout.putConstraint(SpringLayout.EAST, paintPanel, -20, SpringLayout.EAST, container);
+        layout.putConstraint(SpringLayout.NORTH, stopPanel, 30, SpringLayout.NORTH, container);
+        layout.putConstraint(SpringLayout.EAST, stopPanel, -20, SpringLayout.EAST, container);
+
+        layout.putConstraint(SpringLayout.WEST, transportPanel, 20, SpringLayout.WEST, container);
+        layout.putConstraint(SpringLayout.SOUTH, transportPanel, 0, SpringLayout.SOUTH, stopPanel);
 
         buttonBack.addActionListener(new ActionListener()
         {
@@ -399,16 +404,17 @@ public class MainWindow extends JFrame
             {
                 int firstName=firstStop.getSelectedIndex();
                 int secondName=secondStop.getSelectedIndex();
-                List<String> path=operations.findPath(firstName, secondName);
+                List<Stop> path=operations.findPath(firstName, secondName);
                 if(path.isEmpty())
                 {
                     showError();
-                    //paintPanel=new PaintPanel();
                 }
                 else
                 {
-                    container.remove(paintPanel);
-                    createPaintPanel(path);
+                    container.remove(stopPanel);
+                    container.remove(transportPanel);
+                    createStopPanel(path);
+                    createTransportPanel(operations.getInformationAbout(path));
                 }
             }
         });
@@ -417,14 +423,27 @@ public class MainWindow extends JFrame
         repaint();
     }
 
-    private void createPaintPanel(List<String> path)
+    private void createStopPanel(List<Stop> path)
     {
-        paintPanel=new PaintPanel(path);
+        stopPanel =new StopPanel(path);
 
-        container.add(paintPanel);
+        container.add(stopPanel);
 
-        layout.putConstraint(SpringLayout.NORTH, paintPanel, 30, SpringLayout.NORTH, container);
-        layout.putConstraint(SpringLayout.EAST, paintPanel, -20, SpringLayout.EAST, container);
+        layout.putConstraint(SpringLayout.NORTH, stopPanel, 30, SpringLayout.NORTH, container);
+        layout.putConstraint(SpringLayout.EAST, stopPanel, -20, SpringLayout.EAST, container);
+
+        revalidate();
+        repaint();
+    }
+
+    private void createTransportPanel(List<String> path)
+    {
+        transportPanel=new TransportPanel(path);
+
+        container.add(transportPanel);
+
+        layout.putConstraint(SpringLayout.WEST, transportPanel, 20, SpringLayout.WEST, container);
+        layout.putConstraint(SpringLayout.SOUTH, transportPanel, 0, SpringLayout.SOUTH, stopPanel);
 
         revalidate();
         repaint();

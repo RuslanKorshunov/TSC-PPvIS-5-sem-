@@ -1,26 +1,28 @@
 package View;
 
+import Model.Stop;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-class PaintPanel extends JPanel
+class StopPanel extends JPanel
 {
-    private static final int DIAMETER=12;
-    private static final int RADIUS=DIAMETER/2;
-    private static final int WIDTH=300;
-    private static final int HEIGHT=500;
-    public static final int XCOOR = 20;
-    private List<String> path;
+    private final int DIAMETER=12;
+    private final int DISTANCE = DIAMETER+5;
+    private final int WIDTH=300;
+    private final int HEIGHT=500;
+    private final int XCOOR = 20;
+    private List<Stop> path;
 
-    PaintPanel()
+    StopPanel()
     {
         path=new ArrayList<>();
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
     }
 
-    PaintPanel(List<String> path)
+    StopPanel(List<Stop> path)
     {
         this.path=path;
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
@@ -32,14 +34,14 @@ class PaintPanel extends JPanel
         graphics2D.setColor(Color.white);
 
         graphics2D.fillRect(0,0, WIDTH, HEIGHT);
-        int yCoor=HEIGHT/2-Math.round(path.size()/2)*18;
+        int yCoor=15;
         for(int i=path.size()-1; i>=0; i--)
         {
             graphics2D.setColor(Color.red);
             graphics2D.fillOval(XCOOR, yCoor, DIAMETER, DIAMETER);
             graphics2D.setColor(Color.black);
-            graphics2D.drawString(path.get(i), XCOOR+DIAMETER, yCoor+DIAMETER);
-            yCoor+=18;
+            graphics2D.drawString(path.get(i).getName(), XCOOR+DIAMETER, yCoor+DIAMETER);
+            yCoor+=DISTANCE;
         }
     }
 }

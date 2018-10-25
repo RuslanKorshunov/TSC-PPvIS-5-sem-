@@ -20,4 +20,17 @@ public class Edge
     public Stop getSecondStop() {
         return secondStop;
     }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if(obj==this)
+            return true;
+        if(obj==null || obj.getClass()!=this.getClass())
+            return false;
+        Edge edge=(Edge) obj;
+        if(firstStop==edge.firstStop && secondStop==edge.secondStop)
+            return true;
+        return false;
+    }
 }
