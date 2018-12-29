@@ -2,7 +2,6 @@ package View.TableModel;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.List;
-
 import Model.Transport;
 
 public class TransportTableModel extends AbstractTableModel
@@ -36,11 +35,6 @@ public class TransportTableModel extends AbstractTableModel
           return " ";
        else
            return listTransports.get(formula).getNumber();
-   }
-
-   public void clearListTransport()
-   {
-       listTransports.clear();
    }
 
    public void setListTransports(List<Transport> listTransports)

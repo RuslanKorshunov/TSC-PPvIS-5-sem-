@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Stops>
+    <Stop><Name>ст.м.Могилевская</Name></Stop>
+    <Stop><Name>ст.м.Автозаводская</Name></Stop>
+    <Stop><Name>ст.м.Партизанская</Name></Stop>
+    <Stop><Name>ст.м.Тракторный Завод</Name></Stop>
+    <Stop><Name>ст.м.Пролетарская</Name></Stop>
+    <Stop><Name>ст.м.Первомайская</Name></Stop>
+    <Stop><Name>ст.м.Октябрьская/Купаловская</Name></Stop>
+    <Stop><Name>ст.м.Немига</Name></Stop>
+    <Stop><Name>ст.м.Фрунзенская</Name></Stop>
+    <Stop><Name>ст.м.Молодежная</Name></Stop>
+    <Stop><Name>ст.м.Пушкинская</Name></Stop>
+    <Stop><Name>ст.м.Спортивная</Name></Stop>
+    <Stop><Name>ст.м.Кунцевщина</Name></Stop>
+    <Stop><Name>ст.м.Каменная Горка</Name></Stop>
+</Stops>

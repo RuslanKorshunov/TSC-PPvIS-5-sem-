@@ -59,7 +59,7 @@ class OpenParser
                         for(Stop stop:operations.listAllStops)
                             if (stop.getName().equals(stopName))
                                 currentStop = stop;
-                        operations.currentTransport.getRout().getListStops(operations.wayType).add(currentStop);
+                        operations.currentTransport.getListStops(operations.wayType).add(currentStop);
                     }
                 }
 
@@ -202,7 +202,7 @@ class OpenParser
                 if(qName.equalsIgnoreCase("Time"))
                     timetable.addNewTime(hour, minute);
                 if(qName.equalsIgnoreCase("Timetable"))
-                    operations.currentTransport.getRout().getListTimetable(operations.wayType).add(timetable);
+                    operations.currentTransport.getListTimetables(operations.wayType).add(timetable);
             }
         };
         return defaultHandler;

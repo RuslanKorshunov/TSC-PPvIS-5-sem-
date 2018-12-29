@@ -1,28 +1,25 @@
 package Model;
 
-import Model.Rout;
-import Model.TransportType;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Transport
 {
-    /*private static final int FIRSTWAY = 1;
-    private static final int SECONDWAY = 2;*/
-    String number;
-    Rout rout;
-    TransportType transportType;
+    private String number;
+    private TransportType transportType;
+    private List<Stop> listStopsFirstWay;
+    private List<Stop> listStopsSecondWay;
+    private List<Timetable> listTimetablesFirstWay;
+    private List<Timetable> listTimetablesSecondWay;
 
     public Transport()
     {
         number="";
-        rout=new Rout();
         transportType=TransportType.NULL;
-    }
-
-    public Transport(String number, Rout rout, TransportType transportType)
-    {
-        this.number=number;
-        this.rout=rout;
-        this.transportType=transportType;
+        listStopsFirstWay=new LinkedList<>();
+        listStopsSecondWay=new LinkedList<>();
+        listTimetablesFirstWay =new LinkedList<>();
+        listTimetablesSecondWay =new LinkedList<>();
     }
 
     public void setNumber(String number)
@@ -40,13 +37,49 @@ public class Transport
         return number;
     }
 
-    public Rout getRout()
-    {
-        return rout;
-    }
-
     public TransportType getTransportType()
     {
         return transportType;
+    }
+
+    public List<Timetable> getListTimetables(WayType wayType)
+    {
+        switch (wayType)
+        {
+            case FirstWay:
+                return listTimetablesFirstWay;
+            case SecondWay:
+                return listTimetablesSecondWay;
+        }
+        return listTimetablesFirstWay;
+    }
+
+    public String getName(WayType wayType)
+    {
+        switch (wayType)
+        {
+            case FirstWay:
+                return setNameWay(listStopsFirstWay);
+            case SecondWay:
+                return setNameWay(listStopsSecondWay);
+        }
+        return " ";
+    }
+
+    public List<Stop> getListStops(WayType wayType)
+    {
+        switch (wayType)
+        {
+            case FirstWay:
+                return listStopsFirstWay;
+            case SecondWay:
+                return listStopsSecondWay;
+        }
+        return listStopsFirstWay;
+    }
+
+    private String setNameWay(List<Stop> listStopsWay)
+    {
+        return listStopsWay.get(0).getName()+" - "+listStopsWay.get(listStopsWay.size()-1).getName();
     }
 }

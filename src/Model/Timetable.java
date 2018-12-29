@@ -5,26 +5,26 @@ import java.util.List;
 
 public class Timetable
 {
-    List<String> timetable;
+    private List<String> listTimetable;
 
     public Timetable()
     {
-        timetable=new LinkedList<>();
+        listTimetable=new LinkedList<>();
         for(int i=0; i<=23; i++)
         {
             String timeString=i<10?" "+i+": ":i+": ";
-            timetable.add(timeString);
+            listTimetable.add(timeString);
         }
     }
 
     public void addNewTime(String hour, String minute)
     {
-        String newTime=timetable.get(Integer.parseInt(hour))+":"+minute;
-        timetable.set(Integer.parseInt(hour), newTime);
+        String newTime=listTimetable.get(Integer.parseInt(hour))+minute;
+        listTimetable.set(Integer.parseInt(hour), newTime);
     }
 
     public String getTime(int hour)
     {
-        return timetable.get(hour);
+        return listTimetable.get(hour);
     }
 }

@@ -2,6 +2,7 @@ package View;
 
 import Controller.Operations;
 import Model.Stop;
+import Model.Transport;
 import View.TableModel.DateTableModel;
 import View.TableModel.StopTableModel;
 import View.TableModel.TransportTableModel;
@@ -21,15 +22,16 @@ public class MainWindow extends JFrame
     private final int WIDTH=600;
     private final int HEIGHT=600;
     private TransportType transportType=TransportType.Bus;
-    private WayType wayType=WayType.FIRSTWAY;
+    private WayType wayType=WayType.FirstWay;
     private int formulaOfCell=-1;
     private int indexOfStop=-1;
-    private String title="TSC";
+    private String title="Транспортная система города";
     private Container container;
     private SpringLayout layout;
     private Operations operations;
     private StopPanel stopPanel;
     private TransportPanel transportPanel;
+    private ImageIcon upDownImageIcon=new ImageIcon("images/up_down.png");
 
     public MainWindow(Operations operations)
     {
@@ -81,7 +83,7 @@ public class MainWindow extends JFrame
             public void actionPerformed(ActionEvent e)
             {
                 container.removeAll();
-                showTransportTables();
+                showTransportTablesMenu();
             }
         });
         way.addActionListener(new ActionListener()
@@ -90,7 +92,7 @@ public class MainWindow extends JFrame
             public void actionPerformed(ActionEvent e)
             {
                 container.removeAll();
-                createWay();
+                showWayMenu();
             }
         });
         exit.addActionListener(new ActionListener()
@@ -106,7 +108,7 @@ public class MainWindow extends JFrame
         repaint();
     }
 
-    private void showTransportTables()
+    private void showTransportTablesMenu()
     {
         TransportTableModel transportTableModel=new TransportTableModel(20);
         transportTableModel.setListTransports(operations.getListTransports(transportType));
@@ -114,7 +116,8 @@ public class MainWindow extends JFrame
         DateTableModel dateTableModel=new DateTableModel(24);
 
         JButton buttonBack=new JButton("Назад");
-        JButton buttonChangeWay=new JButton();
+        JButton buttonChangeWay=new JButton(upDownImageIcon);
+        buttonChangeWay.setPreferredSize(new Dimension(upDownImageIcon.getIconWidth(), upDownImageIcon.getIconHeight()));
 
         JRadioButton rbBus=new JRadioButton("Автобус", true);
         JRadioButton rbTram=new JRadioButton("Трамвай", false);
@@ -145,7 +148,6 @@ public class MainWindow extends JFrame
         jTableRoutes.setColumnSelectionAllowed(false);
         jTableRoutes.setRowSelectionAllowed(false);
 
-        //JTable jTableStops=new JTable(10, 1);
         JTable jTableStops=new JTable(stopTableModel);
         jTableStops.setRowHeight(25);
         jTableStops.setColumnSelectionAllowed(false);
@@ -153,7 +155,6 @@ public class MainWindow extends JFrame
 
         JTable jTableTimes=new JTable(dateTableModel);
         jTableTimes.setRowHeight(25);
-        ///jTableTimes.setCellSelectionEnabled(false);
         jTableTimes.setColumnSelectionAllowed(false);
         jTableTimes.setRowSelectionAllowed(false);
 
@@ -179,7 +180,6 @@ public class MainWindow extends JFrame
         container.add(labelNameWay);
         container.add(buttonChangeWay);
         container.add(jspForStops);
-        //container.add(jTableStops);
         container.add(labelTime);
         container.add(jspForTimes);
 
@@ -236,8 +236,14 @@ public class MainWindow extends JFrame
             public void actionPerformed(ActionEvent e)
             {
                 transportType=TransportType.Bus;
-                transportTableModel.setListTransports(operations.getListTransports(transportType));
-                labelNameWay.setText(" ");
+                List<Transport> listTransport=operations.getListTransports(transportType);
+                if(listTransport.isEmpty())
+                    showError();
+                else
+                {
+                    transportTableModel.setListTransports(listTransport);
+                    labelNameWay.setText(" ");
+                }
                 stopTableModel.clearListStops();
                 dateTableModel.setTimetable(null);
                 repaint();
@@ -249,8 +255,14 @@ public class MainWindow extends JFrame
             public void actionPerformed(ActionEvent e)
             {
                 transportType = TransportType.Tram;
-                transportTableModel.setListTransports(operations.getListTransports(transportType));
-                labelNameWay.setText(" ");
+                List<Transport> listTransport=operations.getListTransports(transportType);
+                if(listTransport.isEmpty())
+                    showError();
+                else
+                {
+                    transportTableModel.setListTransports(listTransport);
+                    labelNameWay.setText(" ");
+                }
                 stopTableModel.clearListStops();
                 dateTableModel.setTimetable(null);
                 repaint();
@@ -262,8 +274,14 @@ public class MainWindow extends JFrame
             public void actionPerformed(ActionEvent e)
             {
                 transportType=TransportType.Trolleybus;
-                transportTableModel.setListTransports(operations.getListTransports(transportType));
-                labelNameWay.setText(" ");
+                List<Transport> listTransport=operations.getListTransports(transportType);
+                if(listTransport.isEmpty())
+                    showError();
+                else
+                {
+                    transportTableModel.setListTransports(listTransport);
+                    labelNameWay.setText(" ");
+                }
                 stopTableModel.clearListStops();
                 dateTableModel.setTimetable(null);
                 repaint();
@@ -275,8 +293,14 @@ public class MainWindow extends JFrame
             public void actionPerformed(ActionEvent e)
             {
                 transportType=TransportType.Metro;
-                transportTableModel.setListTransports(operations.getListTransports(transportType));
-                labelNameWay.setText(" ");
+                List<Transport> listTransport=operations.getListTransports(transportType);
+                if(listTransport.isEmpty())
+                    showError();
+                else
+                {
+                    transportTableModel.setListTransports(listTransport);
+                    labelNameWay.setText(" ");
+                }
                 stopTableModel.clearListStops();
                 dateTableModel.setTimetable(null);
                 repaint();
@@ -290,7 +314,7 @@ public class MainWindow extends JFrame
             {
                 container.removeAll();
                 transportType=TransportType.Bus;
-                wayType=WayType.FIRSTWAY;
+                wayType=WayType.FirstWay;
                 formulaOfCell=-1;
                 indexOfStop=-1;
                 createMenu();
@@ -303,11 +327,16 @@ public class MainWindow extends JFrame
             {
                 if(formulaOfCell!=-1)
                 {
-                    wayType = wayType == WayType.FIRSTWAY ? WayType.SECONDWAY : WayType.FIRSTWAY;
-                    System.out.println(wayType);
-                    stopTableModel.setListStops(operations.getListStops(transportType, wayType, formulaOfCell));
-                    dateTableModel.setTimetable(null);
-                    labelNameWay.setText(operations.getNameWay(transportType, wayType, formulaOfCell));
+                    wayType = wayType == WayType.FirstWay ? WayType.SecondWay : WayType.FirstWay;
+                    List<Stop> listStop=operations.getListStops(transportType, wayType, formulaOfCell);
+                    if(listStop.isEmpty())
+                        showError();
+                    else
+                    {
+                        stopTableModel.setListStops(listStop);
+                        dateTableModel.setTimetable(null);
+                        labelNameWay.setText(operations.getNameWay(transportType, wayType, formulaOfCell));
+                    }
                     repaint();
                 }
             }
@@ -318,6 +347,7 @@ public class MainWindow extends JFrame
             @Override
             public void mouseClicked(MouseEvent e)
             {
+                wayType=WayType.FirstWay;
                 int selectedRow=jTableRoutes.rowAtPoint(e.getPoint());
                 int selectedColumn=jTableRoutes.columnAtPoint(e.getPoint());
                 if(!transportTableModel.getValueAt(selectedRow, selectedColumn).equals(" "))
@@ -335,7 +365,6 @@ public class MainWindow extends JFrame
             @Override
             public void mouseClicked(MouseEvent e)
             {
-
                 indexOfStop=jTableStops.rowAtPoint(e.getPoint());
                 if(!stopTableModel.getValueAt(indexOfStop, 0).equals(" "))
                     dateTableModel.setTimetable(operations.getTimetable(wayType, indexOfStop));
@@ -347,11 +376,11 @@ public class MainWindow extends JFrame
         repaint();
     }
 
-    private void createWay()
+    private void showWayMenu()
     {
         JComboBox firstStop=new JComboBox(operations.getListNameStops());
         JComboBox secondStop=new JComboBox(operations.getListNameStops());
-        stopPanel =new StopPanel();
+        stopPanel=new StopPanel();
         transportPanel=new TransportPanel();
 
         JButton buttonBack=new JButton("Назад");
@@ -451,6 +480,6 @@ public class MainWindow extends JFrame
 
     private void showError()
     {
-        JOptionPane.showMessageDialog(this,"Необходимые данные отсутствуют.","Ошибка чтения данных", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(this,"Необходимые данные отсутствуют","Ошибка чтения данных", JOptionPane.ERROR_MESSAGE);
     }
 }

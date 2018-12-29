@@ -17,14 +17,14 @@ public class Operations
     List<Transport> listTrams;
     List<Transport> listTrolleybuses;
     List<Transport> listMetro;
-    List<Transport> listTransports;
-    List<Stop> listStopsThisRout;
+    private List<Transport> listTransports;
+    private List<Stop> listStopsThisRout;
     List<Stop> listAllStops;
-    TransportType transportType;
+    private TransportType transportType;
     WayType wayType;
-    OpenParser openParser;
+    private OpenParser openParser;
     Transport currentTransport;
-    Graph graph;
+    private Graph graph;
 
     public Operations()
     {
@@ -69,30 +69,39 @@ public class Operations
         this.transportType=transportType;
         this.wayType=wayType;
         currentTransport=listTransports.get(indexOfTransport);
-        if(currentTransport.getRout().getListStops(wayType).isEmpty())
+        if(currentTransport.getListStops(wayType).isEmpty())
         {
             String fileName="XML-files/"+transportType+"/"+currentTransport.getNumber()+"/";
-            if(wayType==WayType.FIRSTWAY)
+            if(wayType==WayType.FirstWay)
                 fileName+="StopsFirstWay.xml";
             else
                 fileName+="StopsSecondWay.xml";
             openParser.openFile(fileName, 2);
         }
-        return currentTransport.getRout().getListStops(wayType);
+        return currentTransport.getListStops(wayType);
     }
 
     public Timetable getTimetable(WayType wayType, int indexOfStop)
     {
-        if(currentTransport.getRout().getListTimetable(wayType).isEmpty())
+        if(currentTransport.getListTimetables(wayType).isEmpty())
         {
             String fileName="XML-files/"+transportType+"/"+currentTransport.getNumber()+"/";
-            if(wayType==WayType.FIRSTWAY)
+            if(wayType==WayType.FirstWay)
                 fileName+="TimetableFirstWay.xml";
             else
                 fileName+="TimetableSecondWay.xml";
             openParser.openFile(fileName, 3);
         }
-        return currentTransport.getRout().getListTimetable(wayType).get(indexOfStop);
+        Timetable currentTimetable;
+        try
+        {
+            currentTimetable=currentTransport.getListTimetables(wayType).get(indexOfStop);
+        }
+        catch(IndexOutOfBoundsException ex)
+        {
+            currentTimetable=new Timetable();
+        }
+        return currentTimetable;
     }
 
     public String getNameWay(TransportType transportType, WayType wayType, int indexOfTransport)
@@ -101,13 +110,13 @@ public class Operations
         switch(transportType)
         {
             case Bus:
-                return listBuses.get(indexOfTransport).getRout().getName(wayType);
+                return listBuses.get(indexOfTransport).getName(wayType);
             case Tram:
-                return listTrams.get(indexOfTransport).getRout().getName(wayType);
+                return listTrams.get(indexOfTransport).getName(wayType);
             case Trolleybus:
-                return listTrolleybuses.get(indexOfTransport).getRout().getName(wayType);
+                return listTrolleybuses.get(indexOfTransport).getName(wayType);
             case Metro:
-                return listMetro.get(indexOfTransport).getRout().getName(wayType);
+                return listMetro.get(indexOfTransport).getName(wayType);
         }
         return " ";
     }

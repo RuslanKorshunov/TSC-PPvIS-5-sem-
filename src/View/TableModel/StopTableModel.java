@@ -1,7 +1,6 @@
 package View.TableModel;
 
 import Model.Stop;
-
 import javax.swing.table.AbstractTableModel;
 import java.util.LinkedList;
 import java.util.List;

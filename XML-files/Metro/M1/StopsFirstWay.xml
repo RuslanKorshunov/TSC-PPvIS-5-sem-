@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Stops>
+    <Stop><Name>ст.м.Малиновка</Name></Stop>
+    <Stop><Name>ст.м.Петровщина</Name></Stop>
+    <Stop><Name>ст.м.Михалово</Name></Stop>
+    <Stop><Name>ст.м.Грушевка</Name></Stop>
+    <Stop><Name>ст.м.Институт Культуры</Name></Stop>
+    <Stop><Name>ст.м.Площадь Ленина</Name></Stop>
+    <Stop><Name>ст.м.Октябрьская/Купаловская</Name></Stop>
+    <Stop><Name>ст.м.Площадь Победы</Name></Stop>
+    <Stop><Name>ст.м.Площадь Якуба Коласа</Name></Stop>
+    <Stop><Name>ст.м.Академия Наук</Name></Stop>
+    <Stop><Name>ст.м.Парк Челюскинцев</Name></Stop>
+    <Stop><Name>ст.м.Московская</Name></Stop>
+    <Stop><Name>ст.м.Восток</Name></Stop>
+    <Stop><Name>ст.м.Борисовский Тракт</Name></Stop>
+    <Stop><Name>ст.м.Уручье</Name></Stop>
+</Stops>

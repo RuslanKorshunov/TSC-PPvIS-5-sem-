@@ -1,7 +1,6 @@
 package View;
 
 import Model.Stop;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;

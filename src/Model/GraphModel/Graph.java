@@ -68,23 +68,21 @@ public class Graph
     public List<Transport> getListTransportBy(Edge edge)
     {
         List<Transport> list=new ArrayList<>();
-        String s1=edge.getFirstStop().getName();
-        String s2=edge.getSecondStop().getName();
-/*        if(edgeListMap.containsKey(edge))
-            list=edgeListMap.get(edge);*/
-        int i=0;
+        //String s1=edge.getFirstStop().getName();
+        //String s2=edge.getSecondStop().getName();
+        //int i=0;
         for(Map.Entry<Edge, List<Transport>> entry: edgeListMap.entrySet())
         {
-            String s3=entry.getKey().getFirstStop().getName();
-            String s4=entry.getKey().getSecondStop().getName();
+            //String s3=entry.getKey().getFirstStop().getName();
+            //String s4=entry.getKey().getSecondStop().getName();
             if (entry.getKey().equals(edge))
                 list = entry.getValue();
-            i++;
+            //i++;
         }
         return list;
     }
 
-    public void showGraph()
+    /*public void showGraph()
     {
         for(Map.Entry<Stop, List<Stop>> entry: stopListMap.entrySet())
         {
@@ -105,5 +103,5 @@ public class Graph
                 System.out.print(transport.getTransportType()+" "+transport.getNumber()+", ");
             System.out.print("\n");
         }
-    }
+    }*/
 }

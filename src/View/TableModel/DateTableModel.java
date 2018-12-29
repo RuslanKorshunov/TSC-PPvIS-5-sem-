@@ -1,7 +1,6 @@
 package View.TableModel;
 
 import Model.Timetable;
-
 import javax.swing.table.AbstractTableModel;
 
 public class DateTableModel extends AbstractTableModel

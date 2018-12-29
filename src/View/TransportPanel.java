@@ -35,7 +35,7 @@ class TransportPanel extends JPanel
         int fontSize=10;
         int yCoorForOvals=15;
         int yCoorForTrans=15+ DISTANCE /2+fontSize;
-        System.out.println(yCoorForOvals);
+        //System.out.println(yCoorForOvals);
         for(int i=path.size()-1; i>=0; i--)
         {
             String string=path.get(i);
